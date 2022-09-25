@@ -1,3 +1,6 @@
+import abc
+
+
 class FiniteAutomaton:
 
     def __init__(self, *args):
@@ -45,13 +48,14 @@ class FiniteAutomaton:
     def automaton(self, new_automaton):
         self.__automaton = new_automaton
 
-    def addState(self, state, transition, *response):
-        if len(response) == 0:
-            self.__automaton.update({state: {}})
+    def addStateToMachine(self, state):
+        self.__automaton.update({state: {}})
 
-'''
-a.update({"B": {}})
-    a.get("B").update({0: []})
-    a.get("B").get(0).append("B")
-    a.get("B").get(0).append(1)
-'''
+    @abc.abstractmethod
+    def addStimulusAndResponseToState(self, state, stimulus, response):
+        pass
+
+    @abc.abstractmethod
+    def getEquivalentConnectAutomaton(self):
+        pass
+
