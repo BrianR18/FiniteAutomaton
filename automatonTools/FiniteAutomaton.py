@@ -5,6 +5,7 @@ class FiniteAutomaton:
 
     def __init__(self, *args):
         self.__automaton = {}
+        self.__connected = []
         if len(args) == 0:
             self.__states = []
             self.__stimulus = []
@@ -47,6 +48,14 @@ class FiniteAutomaton:
     @automaton.setter
     def automaton(self, new_automaton):
         self.__automaton = new_automaton
+
+    @property
+    def connected(self):
+        return self.__connected
+
+    @connected.setter
+    def connected(self, new_connected: []):
+        self.__connected = new_connected
 
     @abc.abstractmethod
     def addStateToMachine(self, state):
