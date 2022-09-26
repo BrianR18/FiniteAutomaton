@@ -48,8 +48,9 @@ class FiniteAutomaton:
     def automaton(self, new_automaton):
         self.__automaton = new_automaton
 
+    @abc.abstractmethod
     def addStateToMachine(self, state):
-        self.__automaton.update({state: {}})
+        pass
 
     @abc.abstractmethod
     def addStimulusAndResponseToState(self, state, stimulus, response):
