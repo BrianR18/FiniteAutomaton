@@ -68,4 +68,3 @@ class FiniteAutomaton:
     @abc.abstractmethod
     def getEquivalentConnectAutomaton(self):
         pass
-
