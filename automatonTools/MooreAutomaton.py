@@ -9,12 +9,15 @@ class MooreAutomaton(FiniteAutomaton, ABC):
         super().__init__(*args)
 
     def addStateToMachine(self, state):
-        self.__automaton.update({state: [{}]})
+        if state not in self.automaton.keys():
+            self.automaton.update({state: [{}]})
+        else:
+            raise RuntimeError("Automaton already has the state " + str(state))
 
     def addStimulusAndResponseToState(self, state, stimulus: {}, response):
-        if len(self.__automaton.get(state)) == 1:  # Checks if the current state doesn't have a response yet
-            self.__automaton.get(state).append(response)  # Add the responses to the current state
-        self.__automaton.get(state)[0].update(stimulus)
+        if len(self.automaton.get(state)) == 1:  # Checks if the current state doesn't have a response yet
+            self.automaton.get(state).append(response)  # Add the responses to the current state
+        (self.automaton.get(state))[0].update(stimulus)
 
 '''
 a = {"A": [{}]}
