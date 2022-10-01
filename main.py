@@ -1,7 +1,10 @@
 import copy
-from automatonTools import MealyAutomaton as at
+from automatonTools import MealyAutomaton as me
+from automatonTools import MooreAutomaton as mo
+from automatonTools import FiniteAutomaton as fa
 
 blocks = {}
+machine = fa.FiniteAutomaton()
 
 def responsesAreEqual(u, v):
     for s in automaton.stimulus:
@@ -44,8 +47,9 @@ def iterateBlocks():
             return
 
 if __name__ == '__main__':
-
-    automaton = at.MealyAutomaton(["A", "B", "C", "D", "E", "F", "G", "H", "J"], [0, 1], [0, 1])
+    #Mealy
+    print("Mealy")
+    automaton = me.MealyAutomaton(["A", "B", "C", "D", "E", "F", "G", "H", "J"], [0, 1], [0, 1])
     automaton.addStateToMachine("A")
     automaton.addStateToMachine("B")
     automaton.addStateToMachine("C")
@@ -56,7 +60,6 @@ if __name__ == '__main__':
     automaton.addStateToMachine("H")
     automaton.addStateToMachine("J")
 
-    # automaton.addStateToMachine("E")
     # Formato de la función: estado, estimulo, respuesta: formato [EstadoAlQuellega, respuesta]
     automaton.addStimulusAndResponseToState("A", 0, ["B", 0])
     automaton.addStimulusAndResponseToState("A", 1, ["C", 0])
@@ -77,9 +80,25 @@ if __name__ == '__main__':
     automaton.addStimulusAndResponseToState("J", 0, ["H", 1])
     automaton.addStimulusAndResponseToState("J", 1, ["D", 0])
     #automaton.getEquivalentConnectAutomaton()
-
     print(automaton.automaton)
     createBlocks()
     print(blocks)
     iterateBlocks()
     print(blocks)
+
+    #Moore
+    print("Moore")
+    automaton2 = mo.MooreAutomaton(["A", "B", "C", "D"], [0, 1], [0, 1, 2, 3])
+    automaton2.addStateToMachine("A")
+    automaton2.addStateToMachine("B")
+    automaton2.addStateToMachine("C")
+    automaton2.addStateToMachine("D")
+    automaton2.addStimulusAndResponseToState("A", {0: "D"}, 0)
+    automaton2.addStimulusAndResponseToState("A", {1: "B"}, 0)
+    automaton2.addStimulusAndResponseToState("B", {0: "A"}, 1)
+    automaton2.addStimulusAndResponseToState("B", {1: "C"}, 1)
+    automaton2.addStimulusAndResponseToState("C", {0: "B"}, 2)
+    automaton2.addStimulusAndResponseToState("C", {1: "D"}, 2)
+    automaton2.addStimulusAndResponseToState("D", {0: "C"}, 3)
+    automaton2.addStimulusAndResponseToState("D", {1: "A"}, 3)
+    print(automaton2.automaton)

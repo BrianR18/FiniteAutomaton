@@ -1,7 +1,5 @@
 from abc import ABC
-
-from automatonTools.FiniteAutomaton import FiniteAutomaton
-
+from FiniteAutomaton.automatonTools.FiniteAutomaton import FiniteAutomaton
 
 class MealyAutomaton(FiniteAutomaton, ABC):
 
@@ -9,7 +7,10 @@ class MealyAutomaton(FiniteAutomaton, ABC):
         super().__init__(*args)
 
     def addStateToMachine(self, state):
-        self.automaton.update({state: {}})
+        if state not in self.automaton.keys():
+            self.automaton.update({state: {}})
+        else:
+            raise RuntimeError("Automaton already has the state " + str(state))
 
     def addStimulusAndResponseToState(self, state, stimulus, response: []):
         if stimulus not in self.automaton:
@@ -36,7 +37,7 @@ class MealyAutomaton(FiniteAutomaton, ABC):
     def __deleteNotConnectedStates(self):
         for state in self.states:
             if state not in self.connected:
-                self.connected.pop(state)
+                self.automaton.pop(state)
 
     def __getConnectedWithCurrentState(self, state):
         connectedWithCurrentState = []

@@ -1,6 +1,5 @@
 import abc
 
-
 class FiniteAutomaton:
 
     def __init__(self, *args):
