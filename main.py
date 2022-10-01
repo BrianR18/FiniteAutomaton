@@ -4,7 +4,7 @@ from automatonTools import MooreAutomaton as mo
 from automatonTools import FiniteAutomaton as fa
 
 blocks = {}
-machine = fa.FiniteAutomaton()
+automaton = fa.FiniteAutomaton()
 
 def responsesAreEqual(u, v):
     for s in automaton.stimulus:
@@ -88,17 +88,17 @@ if __name__ == '__main__':
 
     #Moore
     print("Moore")
-    automaton2 = mo.MooreAutomaton(["A", "B", "C", "D"], [0, 1], [0, 1, 2, 3])
-    automaton2.addStateToMachine("A")
-    automaton2.addStateToMachine("B")
-    automaton2.addStateToMachine("C")
-    automaton2.addStateToMachine("D")
-    automaton2.addStimulusAndResponseToState("A", {0: "D"}, 0)
-    automaton2.addStimulusAndResponseToState("A", {1: "B"}, 0)
-    automaton2.addStimulusAndResponseToState("B", {0: "A"}, 1)
-    automaton2.addStimulusAndResponseToState("B", {1: "C"}, 1)
-    automaton2.addStimulusAndResponseToState("C", {0: "B"}, 2)
-    automaton2.addStimulusAndResponseToState("C", {1: "D"}, 2)
-    automaton2.addStimulusAndResponseToState("D", {0: "C"}, 3)
-    automaton2.addStimulusAndResponseToState("D", {1: "A"}, 3)
-    print(automaton2.automaton)
+    automaton = mo.MooreAutomaton(["A", "B", "C", "D"], [0, 1], [0, 1, 2, 3])
+    automaton.addStateToMachine("A")
+    automaton.addStateToMachine("B")
+    automaton.addStateToMachine("C")
+    automaton.addStateToMachine("D")
+    automaton.addStimulusAndResponseToState("A", {0: "D"}, 0)
+    automaton.addStimulusAndResponseToState("A", {1: "B"}, 0)
+    automaton.addStimulusAndResponseToState("B", {0: "A"}, 1)
+    automaton.addStimulusAndResponseToState("B", {1: "C"}, 1)
+    automaton.addStimulusAndResponseToState("C", {0: "B"}, 2)
+    automaton.addStimulusAndResponseToState("C", {1: "D"}, 2)
+    automaton.addStimulusAndResponseToState("D", {0: "C"}, 3)
+    automaton.addStimulusAndResponseToState("D", {1: "A"}, 3)
+    print(automaton.automaton)
