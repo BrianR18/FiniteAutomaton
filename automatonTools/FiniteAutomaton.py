@@ -56,6 +56,9 @@ class FiniteAutomaton:
     def connected(self, new_connected: []):
         self.__connected = new_connected
 
+    def initialState(self):
+        return self.__states[0]
+
     @abc.abstractmethod
     def addStateToMachine(self, state):
         pass

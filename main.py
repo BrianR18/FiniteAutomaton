@@ -46,6 +46,52 @@ def iterateBlocks():
         if prev == blocks:
             return
 
+def flipBlocksDict():
+    flipped = {}
+    for k, v in blocks.items():
+        if v not in flipped:
+            flipped[v] = [k]
+        else:
+            flipped[v].append(k)
+    return flipped
+
+def assignEquivalentStates():
+    flippedDict = flipBlocksDict()
+    equivalents = {}
+    for i in blocks.keys():
+        equivalents[i] = flippedDict[blocks[i]][0]
+    return equivalents
+
+def getEquivalentMealeyMachine():
+    states = assignEquivalentStates()
+    validStates = [*set(states.values())]
+    validStates.remove(automaton.initialState())
+    validStates.insert(0, automaton.initialState())
+    eq = me.MealyAutomaton(validStates, automaton.stimulus, automaton.response)
+    for u in validStates:
+        eq.addStateToMachine(u)
+    for u in eq.states:
+        for s in automaton.stimulus:
+            successor = states[automaton.getSuccessorState(u, s)]
+            response = automaton.getResponse(u, s)
+            eq.addStimulusAndResponseToState(u, s, [successor, response])
+    return eq
+
+def getEquivalentMooreMachine():
+    states = assignEquivalentStates()
+    validStates = [*set(states.values())]
+    validStates.remove(automaton.initialState())
+    validStates.insert(0, automaton.initialState())
+    eq = mo.MooreAutomaton(validStates, automaton.stimulus, automaton.response)
+    for u in validStates:
+        eq.addStateToMachine(u)
+    for u in eq.states:
+        for s in automaton.stimulus:
+            successor = states[automaton.getSuccessorState(u, s)]
+            response = automaton.getActualStateResponse(u)
+            eq.addStimulusAndResponseToState(u, {successor: s}, response)
+    return eq
+
 if __name__ == '__main__':
     #Mealy
     print("Mealy")
@@ -85,6 +131,7 @@ if __name__ == '__main__':
     print(blocks)
     iterateBlocks()
     print(blocks)
+    print(getEquivalentMealeyMachine().automaton)
     #Moore
     print("Moore")
     automaton = mo.MooreAutomaton(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"], [0, 1], [0, 1])
@@ -123,6 +170,6 @@ if __name__ == '__main__':
     automaton.addStimulusAndResponseToState("K", {1: "K"}, 1)
     print(automaton.automaton)
     createBlocks()
-    print(blocks)
     iterateBlocks()
     print(blocks)
+    print(getEquivalentMooreMachine().automaton)
