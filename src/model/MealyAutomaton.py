@@ -1,5 +1,5 @@
 from abc import ABC
-from FiniteAutomaton.automatonTools.FiniteAutomaton import FiniteAutomaton
+from src.model.FiniteAutomaton import FiniteAutomaton
 
 
 class MealyAutomaton(FiniteAutomaton, ABC):

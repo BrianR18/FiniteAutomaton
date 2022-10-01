@@ -1,6 +1,6 @@
 import copy
-import FiniteAutomaton.automatonTools.MealyAutomaton as me
-import FiniteAutomaton.automatonTools.MooreAutomaton as mo
+from src.model.MealyAutomaton import MealyAutomaton as me
+from src.model.MooreAutomaton import MooreAutomaton as mo
 
 
 class EquivalentAutomaton:
