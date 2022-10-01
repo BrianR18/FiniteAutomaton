@@ -102,7 +102,7 @@ class SetStatesAndStatusWindow(object):
         self.mealyButton.setText(_translate("Form", "Automata de mealy"))
         self.createButton.setText(_translate("Form", "Crear máquina"))
         self.statesLabel.setText(_translate("Form", "Estados"))
-        self.stimulusStates.setText(_translate("Form", "Estimulus"))
+        self.stimulusStates.setText(_translate("Form", "Estimulos"))
         self.separatorLabel.setText(_translate("Form", "Separador"))
 
     def changeScene(self):

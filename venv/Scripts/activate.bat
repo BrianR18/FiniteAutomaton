@@ -1,6 +1,6 @@
 @echo off
 
-set "VIRTUAL_ENV=D:\workspace\FiniteAutomaton\venv"
+set "VIRTUAL_ENV=C:\Users\Diego\Documents\3-Pycharm Projects\FiniteAutomaton\venv"
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"

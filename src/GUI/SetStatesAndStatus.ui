@@ -139,7 +139,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Estimulus</string>
+    <string>Estimulos</string>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="separatorInput">
