@@ -43,10 +43,8 @@ class Ui_MainWindow(object):
         self.automatonTable.setShowGrid(True)
         self.automatonTable.setGridStyle(QtCore.Qt.DashDotLine)
         self.automatonTable.setCornerButtonEnabled(True)
-        self.automatonTable.setRowCount(5)
-        self.automatonTable.setColumnCount(3)
         self.automatonTable.setObjectName("automatonTable")
-        self.automatonTable.horizontalHeader().setDefaultSectionSize(50)
+        self.automatonTable.horizontalHeader().setDefaultSectionSize(60)
         self.newAutomatonBt = QtWidgets.QPushButton(self.centralwidget)
         self.newAutomatonBt.setGeometry(QtCore.QRect(410, 40, 121, 23))
         font = QtGui.QFont()
@@ -67,6 +65,14 @@ class Ui_MainWindow(object):
                                                                   "mínimo equivalente"))
         self.automatonTable.setSortingEnabled(False)
         self.newAutomatonBt.setText(_translate("MainWindow", "Nuevo autómata"))
+
+    def setColumns(self, labels: []):
+        self.automatonTable.setColumnCount(len(labels))
+        self.automatonTable.setHorizontalHeaderLabels(labels)
+
+    def setRows(self, labels: []):
+        self.automatonTable.setRowCount(len(labels))
+        self.automatonTable.setVerticalHeaderLabels(labels)
 
 
 if __name__ == "__main__":
