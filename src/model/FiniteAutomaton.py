@@ -13,6 +13,9 @@ class FiniteAutomaton:
             self.__states = args[0]
             self.__stimulus = args[1]
             self.__response = args[2]
+        elif len(args) == 2:
+            self.__states = args[0]
+            self.__stimulus = args[1]
         else:
             raise RuntimeError("Invalid number of arguments")
 
