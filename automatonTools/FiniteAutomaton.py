@@ -68,3 +68,7 @@ class FiniteAutomaton:
     @abc.abstractmethod
     def getEquivalentConnectAutomaton(self):
         pass
+
+    @abc.abstractmethod
+    def getResponse(self, state, stimulus):
+        pass

@@ -47,3 +47,5 @@ class MealyAutomaton(FiniteAutomaton, ABC):
                 connectedWithCurrentState.append(stateToAdd)
         return connectedWithCurrentState
 
+    def getResponse(self, state, stimulus):
+        return self.automaton.get(state).get(stimulus)[1]
