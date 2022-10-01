@@ -72,3 +72,7 @@ class FiniteAutomaton:
     @abc.abstractmethod
     def getResponse(self, state, stimulus):
         pass
+
+    @abc.abstractmethod
+    def getSuccessorState(self, start, stimulus):
+        pass

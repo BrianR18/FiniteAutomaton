@@ -49,3 +49,6 @@ class MealyAutomaton(FiniteAutomaton, ABC):
 
     def getResponse(self, state, stimulus):
         return self.automaton.get(state).get(stimulus)[1]
+
+    def getSuccessorState(self, start, stimulus):
+        return self.automaton.get(start).get(stimulus)[0]

@@ -1,3 +1,4 @@
+import copy
 from automatonTools import MealyAutomaton as at
 
 blocks = {}
@@ -22,9 +23,28 @@ def createBlocks():
                     blocks[v] = count
                     added.append(v)
 
+def successorsAreInTheSameBlock(u, v):
+    for s in automaton.stimulus:
+        blockU = blocks[automaton.getSuccessorState(u, s)]
+        blockV = blocks[automaton.getSuccessorState(v, s)]
+        if blockU != blockV:
+            return False
+    return True
 
+def iterateBlocks():
+    while True:
+        prev = copy.deepcopy(blocks)
+        for u in blocks.keys():
+            nextVal = max(blocks.values()) + 1
+            for v in blocks.keys():
+                if u != v and blocks[u] == blocks[v]:
+                    if not successorsAreInTheSameBlock(u, v):
+                        blocks[v] = nextVal
+        if prev == blocks:
+            return
 
 if __name__ == '__main__':
+
     automaton = at.MealyAutomaton(["A", "B", "C", "D", "E", "F", "G", "H", "J"], [0, 1], [0, 1])
     automaton.addStateToMachine("A")
     automaton.addStateToMachine("B")
@@ -60,4 +80,6 @@ if __name__ == '__main__':
 
     print(automaton.automaton)
     createBlocks()
+    print(blocks)
+    iterateBlocks()
     print(blocks)
