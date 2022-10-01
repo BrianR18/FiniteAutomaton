@@ -1,6 +1,7 @@
 from abc import ABC
 from FiniteAutomaton.automatonTools.FiniteAutomaton import FiniteAutomaton
 
+
 class MealyAutomaton(FiniteAutomaton, ABC):
 
     def __init__(self, *args):

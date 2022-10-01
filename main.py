@@ -1,96 +1,7 @@
-import copy
-from automatonTools import MealyAutomaton as me
-from automatonTools import MooreAutomaton as mo
-from automatonTools import FiniteAutomaton as fa
+from FiniteAutomaton.automatonTools import MealyAutomaton as me
+from FiniteAutomaton.automatonTools import MooreAutomaton as mo
+from automatonTools import EquivalentAutomaton as ea
 
-blocks = {}
-automaton = fa.FiniteAutomaton()
-
-def responsesAreEqual(u, v):
-    for s in automaton.stimulus:
-        if automaton.getResponse(u, s) != automaton.getResponse(v, s):
-            return False
-    return True
-
-def createBlocks():
-    added = []
-    count = 0
-    for u in automaton.states:
-        if u not in added:
-            count = count + 1
-            blocks[u] = count
-            added.append(u)
-        for v in automaton.states:
-            if u != v and v not in added:
-                if responsesAreEqual(u, v):
-                    blocks[v] = count
-                    added.append(v)
-
-def successorsAreInTheSameBlock(u, v):
-    for s in automaton.stimulus:
-        blockU = blocks[automaton.getSuccessorState(u, s)]
-        blockV = blocks[automaton.getSuccessorState(v, s)]
-        if blockU != blockV:
-            return False
-    return True
-
-def iterateBlocks():
-    while True:
-        prev = copy.deepcopy(blocks)
-        for u in blocks.keys():
-            nextVal = max(blocks.values()) + 1
-            for v in blocks.keys():
-                if u != v and blocks[u] == blocks[v]:
-                    if not successorsAreInTheSameBlock(u, v):
-                        blocks[v] = nextVal
-        if prev == blocks:
-            return
-
-def flipBlocksDict():
-    flipped = {}
-    for k, v in blocks.items():
-        if v not in flipped:
-            flipped[v] = [k]
-        else:
-            flipped[v].append(k)
-    return flipped
-
-def assignEquivalentStates():
-    flippedDict = flipBlocksDict()
-    equivalents = {}
-    for i in blocks.keys():
-        equivalents[i] = flippedDict[blocks[i]][0]
-    return equivalents
-
-def getEquivalentMealeyMachine():
-    states = assignEquivalentStates()
-    validStates = [*set(states.values())]
-    validStates.remove(automaton.initialState())
-    validStates.insert(0, automaton.initialState())
-    eq = me.MealyAutomaton(validStates, automaton.stimulus, automaton.response)
-    for u in validStates:
-        eq.addStateToMachine(u)
-    for u in eq.states:
-        for s in automaton.stimulus:
-            successor = states[automaton.getSuccessorState(u, s)]
-            response = automaton.getResponse(u, s)
-            eq.addStimulusAndResponseToState(u, s, [successor, response])
-    return eq
-
-def getEquivalentMooreMachine():
-    states = assignEquivalentStates()
-    validStates = [*set(states.values())]
-    validStates.remove(automaton.initialState())
-    validStates.insert(0, automaton.initialState())
-    eq = mo.MooreAutomaton(validStates, automaton.stimulus, automaton.response)
-    for u in validStates:
-        eq.addStateToMachine(u)
-    for u in eq.states:
-        for s in automaton.stimulus:
-            successor = states[automaton.getSuccessorState(u, s)]
-            response = automaton.getActualStateResponse(u)
-            eq.addStimulusAndResponseToState(u, {successor: s}, response)
-    return eq
 
 if __name__ == '__main__':
     #Mealy
@@ -126,12 +37,8 @@ if __name__ == '__main__':
     automaton.addStimulusAndResponseToState("J", 0, ["H", 1])
     automaton.addStimulusAndResponseToState("J", 1, ["D", 0])
     #automaton.getEquivalentConnectAutomaton()
-    print(automaton.automaton)
-    createBlocks()
-    print(blocks)
-    iterateBlocks()
-    print(blocks)
-    print(getEquivalentMealeyMachine().automaton)
+
+
     #Moore
     print("Moore")
     automaton = mo.MooreAutomaton(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"], [0, 1], [0, 1])
@@ -168,8 +75,4 @@ if __name__ == '__main__':
     automaton.addStimulusAndResponseToState("J", {1: "J"}, 0)
     automaton.addStimulusAndResponseToState("K", {0: "A"}, 1)
     automaton.addStimulusAndResponseToState("K", {1: "K"}, 1)
-    print(automaton.automaton)
-    createBlocks()
-    iterateBlocks()
-    print(blocks)
-    print(getEquivalentMooreMachine().automaton)
+
