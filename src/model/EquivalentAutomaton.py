@@ -1,11 +1,13 @@
 import copy
-from src.model.MealyAutomaton import MealyAutomaton as me
-from src.model.MooreAutomaton import MooreAutomaton as mo
+import src.model.MealyAutomaton as me
+import src.model.MooreAutomaton as mo
 
 
 class EquivalentAutomaton:
 
     def __init__(self, automaton):
+        if not isinstance(automaton, (me.MealyAutomaton, mo.MooreAutomaton)):
+            raise RuntimeError("automaton must be moore or mealy")
         self.__blocks = {}
         self.__automaton = automaton
         self.__equivalent = None
@@ -107,7 +109,7 @@ class EquivalentAutomaton:
     def proccessEquivalentAutomaton(self):
         self.__createBlocks()
         self.__iterateBlocks()
-        if type(self.__automaton) is me.MealyAutomaton:
+        if isinstance(self.__automaton, me.MealyAutomaton):
             self.__getEquivalentMealeyMachine()
         else:
             self.__getEquivalentMooreMachine()
