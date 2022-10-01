@@ -10,6 +10,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
 
+def checkNotBlankFields(inputField):
+    response = False
+    if inputField.toPlainText() != "" and not inputField.toPlainText().isspace():
+        response = True
+    return response
+
+
 class SetStatesAndStatusWindow(object):
     def __init__(self):
         self.Form = None
@@ -86,7 +93,7 @@ class SetStatesAndStatusWindow(object):
         self.mooreButton.setChecked(True)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
         self.mainW = main
-        self.createButton.clicked.connect(self.otra)
+        self.createButton.clicked.connect(self.createAutomaton)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -98,9 +105,19 @@ class SetStatesAndStatusWindow(object):
         self.stimulusStates.setText(_translate("Form", "Estimulus"))
         self.separatorLabel.setText(_translate("Form", "Separador"))
 
-    def otra(self):
+    def changeScene(self):
         self.mainW.show()
         self.Form.close()
+
+    def createAutomaton(self):
+        if checkNotBlankFields(self.statesInput) and checkNotBlankFields(self.stimulusInput) \
+                and checkNotBlankFields(self.separatorInput):
+            separator = self.separatorInput.toPlainText()
+            autType = self.mooreButton.text() if self.mooreButton.isChecked() else self.mealyButton.text()
+            self.mainW.setAutomatonProperties(self.statesInput.toPlainText().split(separator),
+                                              self.stimulusInput.toPlainText().split(separator),
+                                              autType)
+            self.changeScene()
 
 
 if __name__ == "__main__":

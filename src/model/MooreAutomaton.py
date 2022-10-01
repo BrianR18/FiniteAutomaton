@@ -1,6 +1,5 @@
 from abc import ABC
-
-from automatonTools.FiniteAutomaton import FiniteAutomaton
+from src.model.FiniteAutomaton import FiniteAutomaton
 
 
 class MooreAutomaton(FiniteAutomaton, ABC):
@@ -20,12 +19,11 @@ class MooreAutomaton(FiniteAutomaton, ABC):
         if len(self.automaton.get(state)[0]) == 0:
             self.automaton.get(state)[0].update(stimulus)
 
-'''
-a = {"A": [{}]}
-    a.get("A").append(0)
-    print(a)
-    a.get("A")[0].update({0: "D"})
-    a.get("A")[0].update({1: "B"})
-    a.update({"B": [{}]})
-    a.get("B").append(1)
-'''
+    def getActualStateResponse(self, state):
+        return self.automaton.get(state)[1]
+
+    def getResponse(self, state, stimulus):
+        return self.automaton.get(self.getSuccessorState(state, stimulus))[1]
+
+    def getSuccessorState(self, start, stimulus):
+        return self.automaton.get(start)[0][stimulus]

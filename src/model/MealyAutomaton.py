@@ -1,7 +1,5 @@
 from abc import ABC
-
-from automatonTools.FiniteAutomaton import FiniteAutomaton
-
+from src.model.FiniteAutomaton import FiniteAutomaton
 
 class MealyAutomaton(FiniteAutomaton, ABC):
 
@@ -50,3 +48,8 @@ class MealyAutomaton(FiniteAutomaton, ABC):
                 connectedWithCurrentState.append(stateToAdd)
         return connectedWithCurrentState
 
+    def getResponse(self, state, stimulus):
+        return self.automaton.get(state).get(stimulus)[1]
+
+    def getSuccessorState(self, start, stimulus):
+        return self.automaton.get(start).get(stimulus)[0]
