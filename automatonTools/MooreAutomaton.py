@@ -18,8 +18,8 @@ class MooreAutomaton(FiniteAutomaton, ABC):
             self.automaton.get(state).append(response)  # Add the responses to the current state
         (self.automaton.get(state))[0].update(stimulus)
 
-    def getResponse(self, start, stimulus):
-        return
+    def getResponse(self, state, stimulus):
+        return self.automaton.get(self.getSuccessorState(state, stimulus))[1]
 
     def getSuccessorState(self, start, stimulus):
-        return
+        return self.automaton.get(start)[0][stimulus]
