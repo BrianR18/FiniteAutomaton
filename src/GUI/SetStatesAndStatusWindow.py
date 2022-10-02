@@ -25,9 +25,9 @@ class SetStatesAndStatusWindow(object):
     def setupUi(self, form, main):
         self.Form = form
         self.Form.setObjectName("Form")
-        self.Form.resize(461, 195)
-        self.Form.setMaximumSize(461, 195)
-        self.Form.setMinimumSize(461, 195)
+        self.Form.resize(461, 230)
+        self.Form.setMaximumSize(461, 230)
+        self.Form.setMinimumSize(461, 230)
         self.mooreButton = QtWidgets.QRadioButton(self.Form)
         self.mooreButton.setGeometry(QtCore.QRect(300, 50, 151, 17))
         font = QtGui.QFont()
@@ -55,12 +55,27 @@ class SetStatesAndStatusWindow(object):
         font.setPointSize(10)
         self.statesInput.setFont(font)
         self.statesInput.setObjectName("statesInput")
+        self.responsesInput = QtWidgets.QPlainTextEdit(self.Form)
+        self.responsesInput.setGeometry(QtCore.QRect(20, 170, 250, 30))  #x,y,w,h
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.responsesInput.setFont(font)
+        self.responsesInput.setObjectName("responsesInput")
         self.stimulusInput = QtWidgets.QPlainTextEdit(self.Form)
         self.stimulusInput.setGeometry(QtCore.QRect(20, 110, 250, 30))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.stimulusInput.setFont(font)
         self.stimulusInput.setObjectName("stimulusInput")
+        self.responsesLabel = QtWidgets.QLabel(self.Form)
+        self.responsesLabel.setGeometry(QtCore.QRect(25, 147, 241, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.responsesLabel.setFont(font)
+        self.responsesLabel.setObjectName("statesLabel")
+        self.responsesLabel.setText("Respuestas")
         self.statesLabel = QtWidgets.QLabel(self.Form)
         self.statesLabel.setGeometry(QtCore.QRect(25, 30, 241, 16))
         font = QtGui.QFont()
@@ -113,11 +128,12 @@ class SetStatesAndStatusWindow(object):
 
     def createAutomaton(self):
         if checkNotBlankFields(self.statesInput) and checkNotBlankFields(self.stimulusInput) \
-                and checkNotBlankFields(self.separatorInput):
+                and checkNotBlankFields(self.separatorInput) and checkNotBlankFields(self.responsesInput):
             separator = self.separatorInput.toPlainText()
             autType = self.mooreButton.text() if self.mooreButton.isChecked() else self.mealyButton.text()
             self.mainW.setAutomatonProperties(self.statesInput.toPlainText().split(separator),
                                               self.stimulusInput.toPlainText().split(separator),
+                                              self.responsesInput.toPlainText().split(separator),
                                               autType)
             self.changeScene()
 
