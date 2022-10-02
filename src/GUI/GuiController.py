@@ -1,9 +1,11 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 
 from src.GUI.gui_ui import *
 from src.GUI.SetStatesAndStatusWindow import *
 from src.model.MealyAutomaton import *
 from src.model.MooreAutomaton import *
+from src.model.EquivalentAutomaton import *
 
 
 MOORE_TYPE = "Automata de moore"
@@ -20,8 +22,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.automaton = None
         self.responses = None
         self.type = None
+        self.equivalentAutomaton = None
         self.form = QtWidgets.QWidget()
-        self.automatonTable.setItem(0, 0, QTableWidgetItem("A,3"))
         self.newAutomatonBt.clicked.connect(self.changesThings)
         self.generateAutomatonBt.clicked.connect(self.generateAutomatonConnectedAndMinimum)
 
@@ -48,14 +50,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for row in range(len(self.states)):
             for column in range(len(self.stimulus)):
                 response = self.automatonTable.item(row, column).text().split(",")
-                self.automatonTable.item(row, column).setTextAlignment(6)
                 self.automaton.addStimulusAndResponseToState(self.states[row], self.stimulus[column], response)
 
     def generateAutomatonConnectedAndMinimum(self):
         for state in self.states:
             self.automaton.addStateToMachine(state)
         self.setStimulusAndResponse()
-        self.automaton.getEquivalentConnectAutomaton()
+        self.equivalentAutomaton = EquivalentAutomaton(self.automaton)
+        self.equivalentAutomaton.processReducedAutomaton()
+        print("equivalente")
+        print(self.equivalentAutomaton.equivalent)
         self.setNewAutomaton()
 
     def setNewAutomaton(self):

@@ -29,6 +29,10 @@ class MealyAutomaton(FiniteAutomaton, ABC):
             self.__getStatesToCurrentState()
             if len(self.connected) != len(self.states):
                 self.__deleteNotConnectedStates()
+                aux = self.automaton.keys()
+                self.states = []
+                for state in aux:
+                    self.states.append(state)
 
     def __getStatesToCurrentState(self):
         for state in self.connected:
