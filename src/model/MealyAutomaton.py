@@ -21,9 +21,9 @@ class MealyAutomaton(FiniteAutomaton, ABC):
 
     def getEquivalentConnectAutomaton(self):
         if len(self.automaton.keys()) > 1:  # There are more than one state
-            self.connected.append(self.states[0])  # Add the initial state to connect set
+            self.connected.append(self.initialState())  # Add the initial state to connect set
             for stimulus in self.stimulus:
-                stateToAdd = self.automaton.get(self.states[0]).get(stimulus)[0]
+                stateToAdd = self.getSuccessorState(self.initialState(), stimulus)
                 if stateToAdd not in self.connected:
                     self.connected.append(stateToAdd)  # Add to connect set the states connect to the initial state
             self.__getStatesToCurrentState()
@@ -36,7 +36,7 @@ class MealyAutomaton(FiniteAutomaton, ABC):
 
     def __getStatesToCurrentState(self):
         for state in self.connected:
-            if state != self.states[0]:
+            if state != self.initialState():
                 self.connected.extend(self.__getConnectedWithCurrentState(state))
 
     def __deleteNotConnectedStates(self):
@@ -47,7 +47,7 @@ class MealyAutomaton(FiniteAutomaton, ABC):
     def __getConnectedWithCurrentState(self, state):
         connectedWithCurrentState = []
         for i in self.stimulus:
-            stateToAdd = self.automaton.get(state).get(i)[0]
+            stateToAdd = self.getSuccessorState(state, i)
             if stateToAdd not in connectedWithCurrentState and stateToAdd not in self.connected:
                 # Add to connect set the states connect to the initial state
                 connectedWithCurrentState.append(stateToAdd)
