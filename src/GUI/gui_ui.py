@@ -7,18 +7,25 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import math
+
+MAX_COLUMN_SIZE = 300
+MIN_COLUMN_SIZE = 60
+MAX_ROW_SIZE = 325
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(543, 389)
+        MainWindow.resize(510, 370)
+        MainWindow.setMaximumSize(510, 370)
+        MainWindow.setMinimumSize(510, 370)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.generateAutomatonBt = QtWidgets.QPushButton(self.centralwidget)
-        self.generateAutomatonBt.setGeometry(QtCore.QRect(410, 80, 121, 41))
+        self.generateAutomatonBt.setGeometry(QtCore.QRect(360, 80, 121, 41))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setHorizontalStretch(0)  # 10 / 5
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.generateAutomatonBt.sizePolicy().hasHeightForWidth())
         self.generateAutomatonBt.setSizePolicy(sizePolicy)
@@ -38,15 +45,14 @@ class Ui_MainWindow(object):
         self.generateAutomatonBt.setDefault(False)
         self.generateAutomatonBt.setObjectName("generateAutomatonBt")
         self.automatonTable = QtWidgets.QTableWidget(self.centralwidget)
-        self.automatonTable.setGeometry(QtCore.QRect(20, 20, 370, 311))
+        self.automatonTable.setGeometry(QtCore.QRect(20, 20, 320, 325))
         self.automatonTable.setDragDropOverwriteMode(False)
         self.automatonTable.setShowGrid(True)
         self.automatonTable.setGridStyle(QtCore.Qt.DashDotLine)
         self.automatonTable.setCornerButtonEnabled(True)
         self.automatonTable.setObjectName("automatonTable")
-        self.automatonTable.horizontalHeader().setDefaultSectionSize(60)
         self.newAutomatonBt = QtWidgets.QPushButton(self.centralwidget)
-        self.newAutomatonBt.setGeometry(QtCore.QRect(410, 40, 121, 23))
+        self.newAutomatonBt.setGeometry(QtCore.QRect(360, 40, 121, 23))
         font = QtGui.QFont()
         font.setPointSize(9)
         font.setBold(False)
@@ -67,6 +73,13 @@ class Ui_MainWindow(object):
         self.newAutomatonBt.setText(_translate("MainWindow", "Nuevo autómata"))
 
     def setColumns(self, labels: []):
+        if len(labels) >= 5:
+            self.automatonTable.horizontalHeader().setMaximumSectionSize(MIN_COLUMN_SIZE)
+            self.automatonTable.horizontalHeader().setMinimumSectionSize(MIN_COLUMN_SIZE)
+        else:
+            self.automatonTable.horizontalHeader().setMaximumSectionSize(math.floor(MAX_COLUMN_SIZE / len(labels)))
+            self.automatonTable.horizontalHeader().setMinimumSectionSize(math.floor(MAX_COLUMN_SIZE / len(labels)))
+            self.automatonTable.horizontalHeader().setDefaultSectionSize(math.floor(MAX_COLUMN_SIZE / len(labels)))
         self.automatonTable.setColumnCount(len(labels))
         self.automatonTable.setHorizontalHeaderLabels(labels)
 

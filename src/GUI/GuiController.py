@@ -48,6 +48,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for row in range(len(self.states)):
             for column in range(len(self.stimulus)):
                 response = self.automatonTable.item(row, column).text().split(",")
+                self.automatonTable.item(row, column).setTextAlignment(6)
                 self.automaton.addStimulusAndResponseToState(self.states[row], self.stimulus[column], response)
 
     def generateAutomatonConnectedAndMinimum(self):
@@ -55,4 +56,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.automaton.addStateToMachine(state)
         self.setStimulusAndResponse()
         self.automaton.getEquivalentConnectAutomaton()
+        self.setNewAutomaton()
 
+    def setNewAutomaton(self):
+        self.setColumns(self.automaton.stimulus)
+        self.setRows(self.automaton.automaton.keys())
