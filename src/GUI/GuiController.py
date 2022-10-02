@@ -6,7 +6,7 @@ from src.GUI.SetStatesAndStatusWindow import *
 from src.model.MealyAutomaton import *
 from src.model.MooreAutomaton import *
 from src.model.EquivalentAutomaton import *
-
+import threading
 
 MOORE_TYPE = "Automata de moore"
 MEALY_TYPE = "Automata de mealy"
@@ -34,34 +34,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.form.show()
         self.hide()
 
-    def setAutomatonProperties(self, states: [], stimulus: [], automatonType):
+    def setAutomatonProperties(self, states: [], stimulus: [], responses: [], automatonType):
         self.states = states
         self.stimulus = stimulus
         self.type = automatonType
+        self.responses = responses
         if automatonType == MOORE_TYPE:
             stimulus.append("Response")
-            self.automaton = MooreAutomaton(states, stimulus)
+            self.automaton = MooreAutomaton(states, stimulus, responses)
         else:
-            self.automaton = MealyAutomaton(states, stimulus)
+            self.automaton = MealyAutomaton(states, stimulus, responses)
         self.setColumns(stimulus)
         self.setRows(states)
 
-    def setStimulusAndResponse(self):
+    def setStimulusAndResponseMealy(self):
         for row in range(len(self.states)):
             for column in range(len(self.stimulus)):
                 response = self.automatonTable.item(row, column).text().split(",")
                 self.automaton.addStimulusAndResponseToState(self.states[row], self.stimulus[column], response)
 
+    def setStimulusAndResponseMoore(self):
+        for row in range(len(self.states)):
+            for column in range(len(self.stimulus) - 1):
+                self.automaton.addStimulusAndResponseToState(self.states[row],
+                                                             {self.stimulus[column],
+                                                              self.automatonTable.item(row, column).text()},
+                                                             self.automatonTable.item(row, len(self.stimulus) - 1).text())
+
     def generateAutomatonConnectedAndMinimum(self):
         for state in self.states:
             self.automaton.addStateToMachine(state)
-        self.setStimulusAndResponse()
+        if self.type == MOORE_TYPE:
+            self.setStimulusAndResponseMoore()
+        else:
+            self.setStimulusAndResponseMealy()
         self.equivalentAutomaton = EquivalentAutomaton(self.automaton)
-        self.equivalentAutomaton.processReducedAutomaton()
-        print("equivalente")
-        print(self.equivalentAutomaton.equivalent)
-        self.setNewAutomaton()
+        equivalentThread = threading.Thread(target=self.setNewAutomaton)
+        equivalentThread.start()  # D
 
     def setNewAutomaton(self):
+        self.equivalentAutomaton.processReducedAutomaton()
         self.setColumns(self.automaton.stimulus)
-        self.setRows(self.automaton.automaton.keys())
+        self.setRows(list(self.equivalentAutomaton.equivalent.automaton.keys()))
