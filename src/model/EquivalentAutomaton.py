@@ -8,18 +8,16 @@ class EquivalentAutomaton:
     The class that provides the methods to reduce a finite state automaton
     whether it is a Mealy automaton or a Moore automaton.
     Defines the blocks, automaton and equivalent attributes.
-    - automaton saves the given automaton to reduce.
-    - equivalent saves the equivalent reduced automaton.
-    - blocks refers to the partitions used to determine the equivalent states. We use a dictionary
-    where the key is a state of the automaton and the value is the block where the state is located.
+      |  - automaton saves the given automaton to reduce.
+      |  - equivalent saves the equivalent reduced automaton.
+      |  - blocks refers to the partitions used to determine the equivalent states. We use a dictionary where the key is a state of the automaton and the value is the block where the state is located.
     """
 
     def __init__(self, automaton):
         """
         Constructor for the Equivalent Automaton class. Requires as param the automaton to reduce.
         Defines the blocks, automaton and equivalent attributes.
-        :param automaton: the given automaton to reduce. It must be an instance of a MealyAutomaton or a
-        MooreAutomaton
+        :param automaton: the given automaton to reduce. It must be an instance of a MealyAutomaton or a MooreAutomaton
         """
         if not isinstance(automaton, (me.MealyAutomaton, mo.MooreAutomaton)):
             raise RuntimeError("automaton must be moore or mealy")
