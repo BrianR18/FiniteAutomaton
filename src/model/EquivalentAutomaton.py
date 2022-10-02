@@ -133,7 +133,6 @@ class EquivalentAutomaton:
     def __getEquivalentMealeyMachine(self):
         """
         Creates the new equivalent automaton for a Mealy automaton
-        :return: the new reduced equivalent automaton
         """
         states = self.__assignEquivalentStates()
         validStates = [*set(states.values())]
@@ -152,7 +151,6 @@ class EquivalentAutomaton:
     def __getEquivalentMooreMachine(self):
         """
         Creates the new equivalent automaton for a Moore automaton
-        :return: the new reduced equivalent automaton
         """
         states = self.__assignEquivalentStates()
         validStates = [*set(states.values())]
@@ -171,7 +169,6 @@ class EquivalentAutomaton:
     def processReducedAutomaton(self):
         """
         Calls the other methods to process the given automaton and get the equivalent reduced automaton
-        :return: the new reduced automaton after processing the given automaton
         """
         self.__automaton.getEquivalentConnectAutomaton()
         self.__createBlocks()
