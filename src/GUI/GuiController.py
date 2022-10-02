@@ -32,6 +32,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.sec = SetStatesAndStatusWindow()
         self.sec.setupUi(self.form, self)
         self.form.show()
+        self.automatonTable.clear()
         self.hide()
 
     def setAutomatonProperties(self, states: [], stimulus: [], responses: [], automatonType):
