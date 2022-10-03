@@ -1,5 +1,3 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem
 
 from src.GUI.gui_ui import *
 from src.GUI.SetStatesAndStatusWindow import *
@@ -85,6 +83,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.equivalentAutomaton = EquivalentAutomaton(self.automaton)
         equivalentThread = threading.Thread(target=self.setNewAutomaton)
         equivalentThread.start()  # D
+        self.window().showAlert("INFORMACIÓN", "Se ha generado el automata reducido", QtWidgets.QMessageBox.Icon.Information)
 
     def setNewAutomaton(self):
         self.equivalentAutomaton.processReducedAutomaton()
@@ -97,6 +96,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.setColumns(self.automaton.stimulus)
         self.setRows(list(self.equivalentAutomaton.equivalent.automaton.keys()))
         self.putItems()
+        #self.window().showAlert("INFORMACIÓN", "Se ha generado el automata reducido", QtWidgets.QMessageBox.Icon.Information)
+
+    def showAlert(self, title: str, msg: str, icon: QtWidgets.QMessageBox.Icon):
+        alert = QtWidgets.QMessageBox()
+        alert.setIcon(icon)
+        alert.setWindowTitle(title)
+        alert.setText(msg)
+        alert.exec_()
 
     def putItems(self):
         if self.type == MOORE_TYPE:
