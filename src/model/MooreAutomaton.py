@@ -60,3 +60,13 @@ class MooreAutomaton(FiniteAutomaton, ABC):
                 # Add to connect set the states connect to the initial state
                 connectedWithCurrentState.append(stateToAdd)
         return connectedWithCurrentState
+
+    def getElementsAsMatrix(self):
+        matrix = []
+        for state in self.automaton.keys():
+            aux = []
+            for stimulus in self.stimulus:
+                aux.append(self.getSuccessorState(state, stimulus))
+            aux.append(self.getActualStateResponse(state))
+            matrix.append(aux)
+        return matrix

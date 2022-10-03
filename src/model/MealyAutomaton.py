@@ -58,3 +58,12 @@ class MealyAutomaton(FiniteAutomaton, ABC):
 
     def getSuccessorState(self, start, stimulus):
         return self.automaton.get(start).get(stimulus)[0]
+
+    def getElementsAsMatrix(self):
+        matrix = []
+        for state in self.automaton.keys():
+            aux = []
+            for stimulus in self.stimulus:
+                aux.append(self.automaton.get(state).get(stimulus))
+            matrix.append(aux)
+        return matrix

@@ -12,6 +12,13 @@ MOORE_TYPE = "Automata de moore"
 MEALY_TYPE = "Automata de mealy"
 
 
+def getListAsStr(linput: []):
+    lstr = ""
+    for element in linput:
+        lstr = lstr + "," + element if len(lstr) == 1 else lstr + element
+    return lstr
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -41,11 +48,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.type = automatonType
         self.responses = responses
         if automatonType == MOORE_TYPE:
-            stimulus.append("Response")
             self.automaton = MooreAutomaton(states, stimulus, responses)
+            aux = []
+            aux.extend(stimulus)
+            aux.append("Response")
+            self.setColumns(aux)
         else:
             self.automaton = MealyAutomaton(states, stimulus, responses)
-        self.setColumns(stimulus)
+            self.setColumns(stimulus)
         self.setRows(states)
 
     def setStimulusAndResponseMealy(self):
@@ -56,11 +66,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def setStimulusAndResponseMoore(self):
         for row in range(len(self.states)):
-            for column in range(len(self.stimulus) - 1):
+            for column in range(len(self.stimulus)):
+                z = self.states[row]
+                x = {self.stimulus[column]: self.automatonTable.item(row, column).text()},
+                c = self.automatonTable.item(row, len(self.stimulus)).text()
                 self.automaton.addStimulusAndResponseToState(self.states[row],
-                                                             {self.stimulus[column],
-                                                              self.automatonTable.item(row, column).text()},
-                                                             self.automatonTable.item(row, len(self.stimulus) - 1).text())
+                                                             {self.stimulus[column]:
+                                                                  self.automatonTable.item(row, column).text()},
+                                                             self.automatonTable.item(row, len(self.stimulus)).text())
 
     def generateAutomatonConnectedAndMinimum(self):
         for state in self.states:
@@ -75,5 +88,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def setNewAutomaton(self):
         self.equivalentAutomaton.processReducedAutomaton()
-        self.setColumns(self.automaton.stimulus)
+        if self.type == MOORE_TYPE:
+            aux = []
+            aux.extend(self.automaton.stimulus)
+            aux.append("Response")
+            self.setColumns(aux)
+        else:
+            self.setColumns(self.automaton.stimulus)
         self.setRows(list(self.equivalentAutomaton.equivalent.automaton.keys()))
+        self.putItems()
+
+    def putItems(self):
+        if self.type == MOORE_TYPE:
+            self.putItemsToMoore()
+        else:
+            self.putItemsToMealy()
+
+    def putItemsToMoore(self):
+        matrix = self.equivalentAutomaton.equivalent.getElementsAsMatrix()
+        for row in range(len(matrix)):
+            for column in range(len(matrix[0])):
+                self.automatonTable.item(row, column).setText(str(matrix[row][column]))
+
+    def putItemsToMealy(self):
+        matrix = self.equivalentAutomaton.equivalent.getElementsAsMatrix()
+        for row in range(len(matrix)):
+            for column in range(len(matrix[0])):
+                self.automatonTable.item(row, column).setText(getListAsStr(matrix[row][column]))
