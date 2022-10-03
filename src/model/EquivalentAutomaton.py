@@ -161,7 +161,6 @@ class EquivalentAutomaton:
             eq.addStateToMachine(u)
         for u in eq.states:
             for s in self.__automaton.stimulus:
-                print(s)
                 successor = states[self.__automaton.getSuccessorState(u, s)]
                 response = self.__automaton.getActualStateResponse(u)
                 eq.addStimulusAndResponseToState(u, {s: successor}, response)

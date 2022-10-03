@@ -82,3 +82,7 @@ class FiniteAutomaton:
     @abc.abstractmethod
     def getSuccessorState(self, start, stimulus):
         pass
+
+    @abc.abstractmethod
+    def getElementsAsMatrix(self):
+        pass
