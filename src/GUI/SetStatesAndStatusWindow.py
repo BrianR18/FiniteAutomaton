@@ -1,13 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'SetStatesAndStatus.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDialog, QLabel, QDialogButtonBox, QVBoxLayout
+from src.GUI.AlertWindow import AlertWindow
 
 
 def checkNotBlankFields(inputField):
@@ -21,6 +14,8 @@ class SetStatesAndStatusWindow(object):
     def __init__(self):
         self.Form = None
         self.mainW = None
+        self.alt = None
+        self.frm = QtWidgets.QWidget()
 
     def setupUi(self, form, main):
         self.Form = form
@@ -56,7 +51,7 @@ class SetStatesAndStatusWindow(object):
         self.statesInput.setFont(font)
         self.statesInput.setObjectName("statesInput")
         self.responsesInput = QtWidgets.QPlainTextEdit(self.Form)
-        self.responsesInput.setGeometry(QtCore.QRect(20, 170, 250, 30))  #x,y,w,h
+        self.responsesInput.setGeometry(QtCore.QRect(20, 170, 250, 30))  # x,y,w,h
         font = QtGui.QFont()
         font.setPointSize(10)
         self.responsesInput.setFont(font)
@@ -136,6 +131,15 @@ class SetStatesAndStatusWindow(object):
                                               self.responsesInput.toPlainText().split(separator),
                                               autType)
             self.changeScene()
+        else:
+            self.showAlert("Llena todos los campos")
+
+    def showAlert(self, msg):
+        if self.alt is None:
+            self.alt = AlertWindow(msg)
+        self.alt.setupUi(self.frm, self.Form)
+        self.Form.setDisabled(True)
+        self.frm.show()
 
 
 if __name__ == "__main__":
